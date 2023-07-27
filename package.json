@@ -1,0 +1,15 @@
+{
+  "name": "cryptopuffies",
+  "version": "1.0.0",
+  "description": "CryptoPuffies is a collection of 8888 randomly generated cute monster avatars living on the Avalanche network.",
+  "main": "docs/index.html",
+  "scripts": {
+    "serve": "http-server docs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "gamedevalice",
+  "license": "ISC",
+  "dependencies": {
+    "http-server": "^14.1.1"
+  }
+}
