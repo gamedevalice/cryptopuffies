@@ -1,4 +1,4 @@
-use std::fs;
+use std::{fs, collections::HashMap};
 
 use serde::{Deserialize, Serialize};
 
@@ -298,6 +298,73 @@ pub fn list_variants() {
             &result[0..3]
         );
     }
+}
+
+pub fn compare_rarity() {
+    let token_data = &fs::read("docs/token-data.json").unwrap();
+    let token_data = String::from_utf8_lossy(token_data).into_owned();
+    let token_data: Vec<ImageData> = serde_json::from_str(&token_data).unwrap();
+    let rarity = get_rarity(&token_data);
+
+    let legacy_token_data = &fs::read("docs/legacy/token-data.json").unwrap();
+    let legacy_token_data = String::from_utf8_lossy(legacy_token_data).into_owned();
+    let legacy_token_data: Vec<ImageData> = serde_json::from_str(&legacy_token_data).unwrap();
+    let legacy_rarity = get_rarity(&legacy_token_data);
+
+    let mut rarity_changes = vec![];
+    for i in 0..legacy_rarity.len() {
+        if legacy_rarity[i].0 != rarity[i].0 {
+            panic!("attributes did not match. unable to calculate rarity");
+        }
+        let old = legacy_rarity[i].1 as f32 / legacy_token_data.len() as f32;
+        let new = rarity[i].1 as f32 / token_data.len() as f32;
+        let change_percent = ((new / old) - 1.0) * 100.0;
+        rarity_changes.push((legacy_rarity[i].0.clone(), change_percent));
+    }
+    rarity_changes.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
+    for (attribute, change) in rarity_changes {
+        if change > 0.0 {
+            println!("{:30} | +{}%", attribute, change);
+        } else {
+            println!("{:30} | {}%", attribute, change);
+        }
+    }
+}
+
+
+pub fn attribute_rarity() {
+    let token_data = &fs::read("docs/token-data.json").unwrap();
+    let token_data = String::from_utf8_lossy(token_data).into_owned();
+    let token_data: Vec<ImageData> = serde_json::from_str(&token_data).unwrap();
+
+    let mut rarity = get_rarity(&token_data);
+    rarity.sort_by(|a, b| a.1.cmp(&b.1));
+
+    for (attribute, odds) in rarity {
+        println!("{:30} | {}%", attribute, odds as f32 / token_data.len() as f32 * 100.0);
+    }
+}    
+
+pub fn get_rarity(token_data: &Vec<ImageData>) -> Vec<(String, u32)> {
+    let mut rarity_map: HashMap<String, u32> = HashMap::new();
+    for token in token_data {
+        *rarity_map.entry(format!("background:{}", token.background)).or_default() += 1;
+        *rarity_map.entry(format!("color:{}", token.color)).or_default() += 1;
+        *rarity_map.entry(format!("face:{}", token.face)).or_default() += 1;
+        *rarity_map.entry(format!("tail:{}", token.tail)).or_default() += 1;
+        *rarity_map.entry(format!("accessory:{}", token.accessory)).or_default() += 1;
+
+        //Since hair and hats cannot co-exist, we make sure don't have a double entry for "Original" hair when there is also a hat.
+        if token.hat != "None" {
+            *rarity_map.entry(format!("hair_hat:{}", token.hat)).or_default() += 1;
+        } else {
+            *rarity_map.entry(format!("hair_hat:{}", token.hairstyle)).or_default() += 1;
+        }
+    }
+    
+    let mut rarity: Vec<(String, u32)> = rarity_map.iter().map(|(k, v)|(k.clone(), *v)).collect();
+    rarity.sort_by(|a, b| a.0.cmp(&b.0));
+    return rarity;
 }
 
 #[derive(Serialize, Deserialize, Debug, Copy, Clone)]

@@ -36,6 +36,14 @@ struct Cli {
     /// Query without criteria
     #[arg(long)]
     without: Vec<String>,
+
+    /// Compare rarity
+    #[arg(long)]
+    rarity_cmp: bool,
+
+    /// List attribute rarity
+    #[arg(long)]
+    rarity: bool,
 }
 
 fn main() {
@@ -60,6 +68,12 @@ fn main() {
     }
     if args.with.len() != 0 || args.without.len() != 0 {
         cmd::analyze::query(args.with, args.without);
+    }
+    if args.rarity_cmp {
+        cmd::analyze::compare_rarity();
+    }
+    if args.rarity {
+        cmd::analyze::attribute_rarity();
     }
 }
 
