@@ -340,8 +340,9 @@ pub fn attribute_rarity() {
     let mut rarity = get_rarity(&token_data);
     rarity.sort_by(|a, b| a.1.cmp(&b.1));
 
-    for (attribute, odds) in rarity {
-        println!("{:30} | {}%", attribute, odds as f32 / token_data.len() as f32 * 100.0);
+    for i in 0..rarity.len() {
+        let (attribute, odds) = &rarity[i];
+        println!("{:3}. {:30} | {}%", i+1, attribute, *odds as f32 / token_data.len() as f32 * 100.0);
     }
 }    
 
