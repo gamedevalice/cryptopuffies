@@ -303,21 +303,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cryptopuffies"
-version = "0.1.0"
-dependencies = [
- "clap",
- "image",
- "rand",
- "rand_chacha",
- "reqwest",
- "serde",
- "serde_json",
- "sha2",
- "tokio",
-]
-
-[[package]]
 name = "digest"
 version = "0.10.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1425,6 +1410,21 @@ dependencies = [
  "pin-project-lite",
  "tokio",
  "tracing",
+]
+
+[[package]]
+name = "tools"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "image",
+ "rand",
+ "rand_chacha",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tokio",
 ]
 
 [[package]]
