@@ -1,0 +1,50 @@
+.display {
+  /* calculated height: view height minus 128 (68*2) px */
+  /* border: 1px solid rgb(224, 157, 0); */
+  height: 100%;
+  padding: 16px;
+  background-color: #1D1E22;
+  color: #EEE;
+}
+
+button {
+  background: linear-gradient(to right, #ec58ff, #e100ff);
+  color: #ffffff;
+  font-size: x-large;   
+  margin-top: 15px; 
+  margin-bottom: 15px;
+}
+
+.puffyImg {
+  width: 500px;
+  height: 500px;
+  float:left;
+}
+
+.leftPanel {     
+  padding: 10px; 
+    float:left;            
+}
+.rightPanel {   
+    padding: 5px;
+    float:left;    
+}
+
+.puffyName {        
+  font-size: xx-large;   
+}
+
+.puffyPreviewBox {
+  border-style: inset;
+}
+
+.attributeTable {
+  border: 5px double black;
+}
+.attributeTableColumn {
+  min-width: 200px;
+}
+.search {
+  font-size: larger; 
+  width: 80px;
+}
