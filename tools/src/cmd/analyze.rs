@@ -26,7 +26,7 @@ pub fn query(with: Vec<String>, without: Vec<String>) {
         .collect::<Vec<i64>>();
 
     //print ids
-    println!("Results:");
+    println!("Results: ({})", results.len());
     println!("{:?}", results);
 
     //print ids formated as query for file explorer
