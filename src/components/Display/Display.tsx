@@ -23,8 +23,8 @@ export const Display = () => {
       console.log(input)
       if (input !== null) {
         input.value = id
-        setPuffyToPreview(id)
       }
+      setPuffyToPreview(id)
     }
   }
 
@@ -34,6 +34,10 @@ export const Display = () => {
 
   function getAttribute(id: string, attribute:string):string {
       var i = parseInt(id)
+      if (Number.isNaN(i)) {
+        setPuffyToPreview("0");
+        i = 0;
+      }
       if (attribute === "background") {
         return tokenData[i].background
       } else if (attribute === "color") {
@@ -64,8 +68,6 @@ export const Display = () => {
 
   return (
     <div className={styles.display}>
-      {wallet.accounts.length > 0 &&
-        <>
           <div>CryptoPuffies is a collection of 8888 randomly generated cute monster avatars living on the Avalanche network.</div>
           <div>Puffies Minted: {wallet.puffyTotalSupply}/8888 (ids: 0-8887)</div>
           {/*<button onClick={clickMint}>Mint Puffy (2 AVAX)</button>*/}
@@ -85,6 +87,7 @@ export const Display = () => {
             <div className={styles.rightPanel}>
               <div className={styles.puffyName}>Puffy #{getPuffyToPreview()}</div>
               <table className={styles.attributeTable}>
+                <tbody>
               <tr><th className={styles.attributeTableColumn}></th><th className={styles.attributeTableColumn}></th></tr>
               <tr><td>Background:</td><td>{getAttribute(getPuffyToPreview(), 'background')}</td></tr>
               <tr><td>Color:</td><td>{getAttribute(getPuffyToPreview(), 'color')}</td></tr>
@@ -93,6 +96,7 @@ export const Display = () => {
               <tr><td>Hat:</td><td>{getAttribute(getPuffyToPreview(), 'hat')}</td></tr>
               <tr><td>Tail:</td><td>{getAttribute(getPuffyToPreview(), 'tail')}</td></tr>
               <tr><td>Accessory:</td><td>{getAttribute(getPuffyToPreview(), 'accessory')}</td></tr>
+              </tbody>
               </table>
               {/*
               <table className={styles.attributeTable}>
@@ -110,8 +114,6 @@ export const Display = () => {
               */}
             </div>
           </div>
-        </>
-      }
     </div>
   )
 }
